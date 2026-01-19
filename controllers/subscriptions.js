@@ -15,4 +15,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/new', async (req, res) => {
+    res.render('subscriptions/new.ejs');
+});
+
+router.post('/', async (req, res) => {
+    try {
+        req.body.owner = req.session.user._id;
+        await Subscription.create(req.body);
+        res.redirect('/subscriptions');
+    } catch (error) {
+        console.log(error);
+        res.redirect('/subscriptions');
+    }
+});
+
 module.exports = router;

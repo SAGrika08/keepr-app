@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a New Subscriptions</title>
+</head>
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Add a New Subscription</h1>
+    <form action="/subscriptions" method="POST">
+        <label for="service-name">Service Name:</label>
+        <input type="text" name="serviceName" id="service-name" />
+        <label for="plan-name">Plan Name:</label>
+        <input type="text" name="planName" id="plan-name" />
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" min="0" />
+        <label for="currency">Currency:</label>
+        <input type="text" name="currency" id="currency" />
+        <label for="renewal-date">Renewal Date:</label>
+        <input type="date" name="renewalDate" id="renewal-date" />
+        <label for="sub-type">Subscription Type:</label>
+        <input type="checkbox" name="subscriptionType" id="sub-type" />
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="active">Active</option>
+            <option value="paused">Paused</option>
+            <option value="canceled">Canceled</option>
+        </select>
+        <label for="notes">Notes:</label>
+        <textarea name="notes" id="notes" rows="4" cols="50"></textarea>
+    </form>
+        <button type="submit">Create Subscription</button>
+    </body>
+</html>
