@@ -10,26 +10,40 @@
     <h1>Add a New Subscription</h1>
     <form action="/subscriptions" method="POST">
         <label for="service-name">Service Name:</label>
-        <input type="text" name="serviceName" id="service-name" />
+        <input type="text" name="serviceName" id="service-name" placeholder="Netflix, Spotify, Notion..." required/>
         <label for="plan-name">Plan Name:</label>
-        <input type="text" name="planName" id="plan-name" />
+        <input type="text" name="planName" id="plan-name" placeholder="Basic, Premium..." />
         <label for="price">Price:</label>
-        <input type="number" name="price" id="price" min="0" />
+        <input type="number" name="price" id="price" min="0" required />
         <label for="currency">Currency:</label>
-        <input type="text" name="currency" id="currency" />
+        <select name="currency" id="currency" required>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="INR">INR (₹)</option>
+        </select>
         <label for="renewal-date">Renewal Date:</label>
         <input type="date" name="renewalDate" id="renewal-date" />
         <label for="sub-type">Subscription Type:</label>
-        <input type="checkbox" name="subscriptionType" id="sub-type" />
+        <input type="radio" name="subscriptionType" id="trail" value="trail" checked />
+        <label for="trail">Trail</label>
+        <input type="radio" name="subscriptionType" id="weekly" value="weekly" />
+        <label for="weekly">Weekly</label>
+        <input type="radio" name="subscriptionType" id="monthly" value="monthly" />
+        <label for="monthly">Monthly</label>
+        <input type="radio" name="subscriptionType" id="yearly" value="yearly" />
+        <label for="yearly">Yearly</label>
         <label for="status">Status:</label>
-        <select name="status" id="status">
+        <select name="status" id="status" required>
             <option value="active">Active</option>
             <option value="paused">Paused</option>
             <option value="canceled">Canceled</option>
         </select>
         <label for="notes">Notes:</label>
-        <textarea name="notes" id="notes" rows="4" cols="50"></textarea>
-    </form>
+        <textarea name="notes" id="notes" rows="4" cols="50"  placeholder="Any extra details (account email, reminders, cancellation info...)"></textarea>
+        <button type="reset">Clear</button>
+        <button type="submit" onclick="window.location.href='/subscriptions'">Back</button>
         <button type="submit">Create Subscription</button>
+        </form>
     </body>
 </html>
