@@ -10,16 +10,21 @@
     <% if (user) { %>
     <h1>Welcome to the KEEPR, <%= user.username %>!</h1>
 
-    <h2>Summary</h2>
+    <h3>Summary</h3>
     <p>Active subscriptions: <%= subscriptions.active.length %></p>
     <p>Paused subscriptions: <%= subscriptions.paused.length %></p>
     <p>Cancelled subscriptions: <%= subscriptions.cancelled.length %></p>
-    <p>
-      Estimated monthly cost:
-      <strong><%= totalMonthlyCost.toFixed(2) %></strong>
-    </p>
+    
+    <h3>Estimated monthly cost by currency</h3>
+<ul>
+  <% Object.keys(totalMonthlyCostByCurrency).forEach(currency => { %>
+    <li>
+      <%= currency %>: <%= totalMonthlyCostByCurrency[currency].toFixed(2) %>
+    </li>
+  <% }) %>
+</ul>
 
-    <h2>Upcoming Renewals</h2>
+    <h3>Upcoming Renewals</h3>
 
     <% if (upcomingRenewals.length > 0) { %>
       <ul>
@@ -45,15 +50,8 @@
       <p>No upcoming renewals in the next 30 days.</p>
     <% } %>
 
-    <p>
-      <a href="/auth/sign-out">Sign out</a>
-    </p>
   <% } else { %>
     <h1>Welcome to the KEEPR, guest!</h1>
-    <p>
-      <a href="/auth/sign-up">Sign up</a> or
-      <a href="/auth/sign-in">Sign in</a>.
-    </p>
   <% } %>
 </body>
 </html>

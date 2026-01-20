@@ -8,6 +8,20 @@
   <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Here's all the Subscriptions</h1>
+    <h3>Filter by status</h3>
+<p>
+  <a href="/subscriptions">All</a> |
+  <a href="/subscriptions?status=Active">Active</a> |
+  <a href="/subscriptions?status=Paused">Paused</a> |
+  <a href="/subscriptions?status=Cancelled">Cancelled</a>
+</p>
+
+<h3>Sort By</h3>
+<p>
+  <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sort=renewal">
+        Renewing Soon
+  </a>
+</p>
     <% if (subscriptions.length > 0) { %> 
     <ul>
     <% subscriptions.forEach((subscription) => { %>

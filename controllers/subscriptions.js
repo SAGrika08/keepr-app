@@ -6,9 +6,24 @@ const Subscription = require('../models/subscription.js');
 
 router.get('/', async (req, res) => {
     try {
-        const userSubscriptions = await Subscription.find({ owner: req.session.user._id });
+        const status = req.query.status;
+        const sortBy = req.query.sortBy;
+
+        const query = { owner: req.session.user._id };
+        if (status === 'Active' || status === 'Paused' || status === 'Cancelled') {
+            query.status = status;
+        }
+        let sortOption = {};
+        if (sortBy === 'renewalDate') {
+            sortOption.renewalDate = 1; 
+        }
+        const userSubscriptions = await Subscription.find(query).sort(sortOption);
         res.locals.subscriptions = userSubscriptions;
-        res.render('subscriptions/index.ejs', { user: req.session.user });
+        res.render('subscriptions/index.ejs', { 
+            user: req.session.user,
+            currentStatus: status || 'All',
+            currentSort: sortBy || 'None'    
+        });
     } catch (error) {
         console.log(error);
         res.redirect('/');

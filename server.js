@@ -52,18 +52,18 @@ app.get('/', async(req, res) => {
             const cancelledSubscriptions = subscriptions.filter(sub => sub.status === 'Cancelled');
             const pausedSubscriptions = subscriptions.filter(sub => sub.status === 'Paused');
 
-            const totalMonthlyCostByCurrency = activeSubscriptions.reduce((total, sub) => {
+            const totalMonthlyCostByCurrency = activeSubscriptions.reduce((totals, sub) => {
                 const currency = sub.currency;
                 const price = Number(sub.price) || 0;
                 let monthlyPrice = 0;
             
-                if (sub.subType === 'Weekly') monthlyPrice = (Number(sub.price) || 0) * 4;
-                else if (sub.subType === 'Monthly') monthlyPrice = (Number(sub.price) || 0);
-                else if (sub.subType === 'Yearly') monthlyPrice = (Number(sub.price) || 0) / 12;
+                if (sub.subType === 'Weekly') monthlyPrice = price * 4;
+                else if (sub.subType === 'Monthly') monthlyPrice = price;
+                else if (sub.subType === 'Yearly') monthlyPrice = price / 12;
                 else monthlyPrice = 0;
 
-                total[currency] = (total[currency] || 0) + monthlyPrice;
-                return total;
+                totals[currency] = (totals[currency] || 0) + monthlyPrice;
+                return totals;
             }, {});
 
             const today = new Date();
@@ -74,6 +74,8 @@ app.get('/', async(req, res) => {
                 if (!sub.renewalDate) return false;
                 return sub.renewalDate >= today && sub.renewalDate <= next30Days;
             }).sort((a, b) => new Date(a.renewalDate) - new Date(b.renewalDate)).slice(0, 5);
+
+            
 
             return res.render('index.ejs', {
                 user: req.session.user,
