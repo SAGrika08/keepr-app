@@ -8,6 +8,8 @@ const morgan = require('morgan');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
 
+const subscription = require('./models/subscription.js');
+const user = require('./models/user.js');
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
@@ -20,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('connected', () => {
   console.log(`Conneted to MongoDB ${mongoose.connection.name}`);
 });
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
@@ -35,12 +38,55 @@ app.use(
     })
 );
 
+app.use(passUserToView);
+
 //routes
-app.get('/', (req, res) => {
-    res.render('index.ejs', { user: req.session.user });
+app.get('/', async(req, res) => {
+    const user = req.session.user;
+        if (!user) {
+            return res.render('index.ejs', { user: null });
+        }
+        try {
+            const subscriptions = await subscription.find({ owner: user._id });
+            const activeSubscriptions = subscriptions.filter(sub => sub.status === 'Active');
+            const cancelledSubscriptions = subscriptions.filter(sub => sub.status === 'Cancelled');
+            const pausedSubscriptions = subscriptions.filter(sub => sub.status === 'Paused');
+
+            const totalMonthlyCost = activeSubscriptions.reduce((total, sub) => {
+                let monthlyPrice = 0;
+            
+                if (sub.subType === 'Weekly') monthlyPrice = (Number(sub.price) || 0) * 4;
+                else if (sub.subType === 'Monthly') monthlyPrice = (Number(sub.price) || 0);
+                else if (sub.subType === 'Yearly') monthlyPrice = (Number(sub.price) || 0) / 12;
+                else monthlyPrice = 0;
+                return total + monthlyPrice;
+            }, 0);
+
+            const today = new Date();
+            const next30Days = new Date();
+            next30Days.setDate(today.getDate() + 30);
+
+            const upcomingRenewals = activeSubscriptions.filter(sub => {
+                sub.renewalDate >= today && sub.renewalDate <= next30Days;
+            }).sort((a, b) => new Date(a.renewalDate) - new Date(b.renewalDate)).slice(0, 5);
+
+            return res.render('index.ejs', {
+                user: req.session.user,
+                subscriptions: {
+                    active: activeSubscriptions,
+                    cancelled: cancelledSubscriptions,
+                    paused: pausedSubscriptions,
+                },
+                totalMonthlyCost,
+                upcomingRenewals
+            });
+
+    } catch (error) {
+        console.log(error);
+        return res.render('index.ejs', { user: req.session.user });
+    }
 });
 
-app.use(passUserToView);
 app.use('/auth', authController);
 app.use(isSignedIn);
 app.use('/subscriptions', subscriptionsController);

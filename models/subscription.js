@@ -9,11 +9,11 @@ const subscriptionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    monthlyCost: {
+    price: {
         type: Number,
         required: true
     },
-    curreny: {
+    currency: {
         type: String,
         required: true
     },  

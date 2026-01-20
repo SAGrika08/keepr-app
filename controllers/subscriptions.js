@@ -30,4 +30,57 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/:subscriptionId', async (req, res) => {
+    try {
+        const populatedSubscriptions = await Subscription.findById(req.params.subscriptionId).populate('owner');
+        if (!populatedSubscriptions) {  
+            return res.redirect('/subscriptions');
+        }
+        res.render('subscriptions/show.ejs', { subscription: populatedSubscriptions }); 
+     } catch (error) {
+        console.log(error);
+        res.redirect('/'); 
+    }
+});
+
+router.delete('/:subscriptionId', async (req, res) => {
+    try {
+        const subscriptionToDelete = await Subscription.findById(req.params.subscriptionId);
+        if (subscriptionToDelete.owner.equals(req.session.user._id)) {
+            await subscriptionToDelete.deleteOne();
+            res.redirect('/subscriptions');
+        } else {
+            res.send('You do not have permission to delete this subscription.');
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('/subscriptions');
+    }
+});
+
+router.get('/:subscriptionId/edit', async (req, res) => {
+    try {
+        const subscriptionToEdit = await Subscription.findById(req.params.subscriptionId);
+        res.render('subscriptions/edit.ejs', { subscription: subscriptionToEdit });
+    } catch (error) {
+        console.log(error);
+        res.redirect('/subscriptions');
+    }
+});
+
+router.put('/:subscriptionId', async (req, res) => {
+    try {
+        const currentSubscription = await Subscription.findById(req.params.subscriptionId);
+        if (currentSubscription.owner.equals(req.session.user._id)) {
+            await currentSubscription.updateOne(req.body);      
+            res.redirect('/subscriptions/' + req.params.subscriptionId);
+        } else {
+            res.send('You do not have permission to edit this subscription.');
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('/subscriptions');
+    }
+});
+
 module.exports = router;

@@ -11,9 +11,11 @@
     <% if (subscriptions.length > 0) { %> 
     <ul>
     <% subscriptions.forEach((subscription) => { %>
-      <li><a href="/subscriptions/<%= subscription._id %>"><%= subscription.serviceName %></a>
-    <a href="/subscriptions/<%= subscription._id %>">View more details.</a>
- </li>
+     <li>
+      <a href="/subscriptions/<%= subscription._id %>">
+        <%= subscription.serviceName %>
+      </a>
+    </li>
     <% }) %>
     </ul>
     <% } else { %>
