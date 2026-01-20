@@ -7,25 +7,48 @@
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Here's all the Subscriptions</h1>
-    <h3>Filter by status</h3>
-<p>
-  <a href="/subscriptions">All</a> |
-  <a href="/subscriptions?status=Active">Active</a> |
-  <a href="/subscriptions?status=Paused">Paused</a> |
-  <a href="/subscriptions?status=Cancelled">Cancelled</a>
-</p>
+    <main class="subscriptions">
+    <h1>Subscriptions</h1>
+    <p class="subtitle">
+    Here is a list of all the subscriptions you have added.
+    You can filter them by status and sort them by renewal date.
+    </p>
+    <div class="filter-row">
+    <span>Status</span>
 
-<h3>Sort By</h3>
-<p>
-  <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sort=renewal">
-        Renewing Soon
-  </a>
-</p>
+    <a href="/subscriptions"
+       class="<%= currentStatus === 'All' ? 'active' : '' %>">
+      All
+    </a>
+    <a href="/subscriptions?status=Active"
+       class="<%= currentStatus === 'Active' ? 'active' : '' %>">
+      Active
+    </a>
+
+    <a href="/subscriptions?status=Paused"
+       class="<%= currentStatus === 'Paused' ? 'active' : '' %>">
+      Paused
+    </a>
+
+    <a href="/subscriptions?status=Cancelled"
+       class="<%= currentStatus === 'Cancelled' ? 'active' : '' %> ">
+      Cancelled
+    </a>
+  </div>
+
+  <div class="filter-row">
+    <span>Order</span>
+
+    <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sort=renewal"
+       class="<%= currentSort === 'renewal' ? 'active' : '' %>">
+      Renewing soon
+    </a>
+  </div>
+
     <% if (subscriptions.length > 0) { %> 
-    <ul>
+    <ul class="subscription-list">
     <% subscriptions.forEach((subscription) => { %>
-     <li>
+     <li class="subscription-item">
       <a href="/subscriptions/<%= subscription._id %>">
         <%= subscription.serviceName %>
       </a>
@@ -35,8 +58,11 @@
     <% } else { %>
     <p>You have not logged any services yet.</p>
     <% } %>
+    <div class="action">
     <form action="/subscriptions/new" method="GET">
-    <button type="submit">Add New Subscription</button>
+    <button type="submit">+ Add New Subscription</button>
     </form>
+    </div>
+    </main>
     </body>
 </html>
