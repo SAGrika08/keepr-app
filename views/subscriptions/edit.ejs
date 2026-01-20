@@ -7,44 +7,78 @@
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
+    <main class="form-page">
     <h1>Edit <%= subscription.serviceName %></h1>
-    <form action="/subscriptions/<%= subscription._id %>?_method=PUT" method="POST">
-        <label for="service-name">Service Name:</label>
+    <p class="subtitle">Update the details below and save your changes.</p>
+
+    <form class="form" action="/subscriptions/<%= subscription._id %>?_method=PUT" method="POST">
+
+        <div class="form-row">
+        <label for="service-name">Service Name</label>
         <input type="text" name="serviceName" id="service-name" value="<%= subscription.serviceName %>" required/>
-        <label for="plan-name">Plan Name:</label>
-        <input type="text" name="planName" id="plan-name" value="<%= subscription.planName %>"/>
-        <label for="price">Price:</label>
+        </div>
+
+        <div class="form-row">
+        <label for="plan-name">Plan Name</label>
+        <input type="text" name="planName" id="plan-name" value="<%= subscription.planName %>" required/>
+        </div>
+
+        <div class="form-row">
+        <label for="price">Price</label>
         <input type="number" name="price" id="price" min="0" value="<%= subscription.price %>" required />
-        <label for="currency">Currency:</label>
-        <select name="currency" id="currency" required value ="<%= subscription.currency %>">
-            <option value="" disabled>Select Currency</option>
+        </div>
+
+        <div class="form-row">
+        <label for="currency">Currency</label>
+        <select name="currency" id="currency" required>
+            <option value="" disabled>Select currency</option>
             <option value="USD" <%= subscription.currency === 'USD' ? 'selected' : '' %>>USD ($)</option>
             <option value="EUR" <%= subscription.currency === 'EUR' ? 'selected' : '' %>>EUR (€)</option>
             <option value="GBP" <%= subscription.currency === 'GBP' ? 'selected' : '' %>>GBP (£)</option>
             <option value="INR" <%= subscription.currency === 'INR' ? 'selected' : '' %>>INR (₹)</option>
         </select>
-        <label for="renewal-date">Renewal Date:</label>
-        <input type="date" name="renewalDate" id="renewal-date" value="<%= subscription.renewalDate ? new Date(subscription.renewalDate).toISOString().split('T')[0] : '' %>" />
-        <label for="sub-type">Subscription Type:</label>
-        <input type="radio" name="subType" id="trail" value="Trail"  <%= subscription.subType === 'Trial' ? 'checked' : '' %>/>
-        <label for="trail">Trail</label>
+        </div>
+
+        <div class="form-row">
+        <label for="renewal-date">Renewal Date</label>
+        <input type="date" name="renewalDate" id="renewal-date" required value="<%= subscription.renewalDate ? new Date(subscription.renewalDate).toISOString().split('T')[0] : '' %>" />
+        </div>
+
+        <div class="form-row">
+        <label for="sub-type">Billing Type</label>
+         <div class="radio-group">
+        <input type="radio" name="subType" id="trial" value="Trial"  <%= subscription.subType === 'Trial' ? 'checked' : '' %>/>
+        <label for="trial">Trial</label>
         <input type="radio" name="subType" id="weekly" value="Weekly" <%= subscription.subType === 'Weekly' ? 'checked' : '' %>/>
         <label for="weekly">Weekly</label>
         <input type="radio" name="subType" id="monthly" value="Monthly" <%= subscription.subType === 'Monthly' ? 'checked' : '' %>/>
         <label for="monthly">Monthly</label>
         <input type="radio" name="subType" id="yearly" value="Yearly" <%= subscription.subType === 'Yearly' ? 'checked' : '' %>/>
         <label for="yearly">Yearly</label>
-        <label for="status">Status:</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+        <label for="status">Status</label>
         <select name="status" id="status" required>
+            <option value="" disabled>Select status</option>
             <option value="Active" <%= subscription.status === 'Active' ? 'selected' : '' %>>Active</option>
             <option value="Paused" <%= subscription.status === 'Paused' ? 'selected' : '' %>>Paused</option>
             <option value="Cancelled" <%= subscription.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
         </select>
-        <label for="notes">Notes:</label>
-        <textarea name="notes" id="notes" rows="4" cols="50"  value="<%= subscription.notes || '' %>"></textarea>
+        </div>
+
+        <div class="form-row">
+        <label for="notes">Notes (optional)</label>
+        <textarea name="notes" id="notes" rows="4" cols="50"><%= subscription.notes || '' %></textarea>
+        </div>
+
+        <div class="form-actions">
         <button type="reset">Reset</button>
-        <button type="button" onclick="window.location.href='/subscriptions'">Back</button>
+        <button type="button" onclick="window.location.href='/subscriptions/<%= subscription._id %>'">Back</button>
         <button type="submit">Update Subscription</button>
+        </div>
         </form>
+    </main>
     </body>
 </html>
