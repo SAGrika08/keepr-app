@@ -52,15 +52,19 @@ app.get('/', async(req, res) => {
             const cancelledSubscriptions = subscriptions.filter(sub => sub.status === 'Cancelled');
             const pausedSubscriptions = subscriptions.filter(sub => sub.status === 'Paused');
 
-            const totalMonthlyCost = activeSubscriptions.reduce((total, sub) => {
-                const currency = sub.currency || ';
+            const totalMonthlyCostByCurrency = activeSubscriptions.reduce((total, sub) => {
+                const currency = sub.currency;
+                const price = Number(sub.price) || 0;
+                let monthlyPrice = 0;
             
                 if (sub.subType === 'Weekly') monthlyPrice = (Number(sub.price) || 0) * 4;
                 else if (sub.subType === 'Monthly') monthlyPrice = (Number(sub.price) || 0);
                 else if (sub.subType === 'Yearly') monthlyPrice = (Number(sub.price) || 0) / 12;
                 else monthlyPrice = 0;
-                return total + monthlyPrice;
-            }, 0);
+
+                total[currency] = (total[currency] || 0) + monthlyPrice;
+                return total;
+            }, {});
 
             const today = new Date();
             const next30Days = new Date();
@@ -78,7 +82,7 @@ app.get('/', async(req, res) => {
                     cancelled: cancelledSubscriptions,
                     paused: pausedSubscriptions,
                 },
-                totalMonthlyCost,
+                totalMonthlyCostByCurrency,
                 upcomingRenewals
             });
 
