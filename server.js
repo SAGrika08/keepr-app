@@ -53,7 +53,7 @@ app.get('/', async(req, res) => {
             const pausedSubscriptions = subscriptions.filter(sub => sub.status === 'Paused');
 
             const totalMonthlyCost = activeSubscriptions.reduce((total, sub) => {
-                let monthlyPrice = 0;
+                const currency = sub.currency || ';
             
                 if (sub.subType === 'Weekly') monthlyPrice = (Number(sub.price) || 0) * 4;
                 else if (sub.subType === 'Monthly') monthlyPrice = (Number(sub.price) || 0);
@@ -67,7 +67,8 @@ app.get('/', async(req, res) => {
             next30Days.setDate(today.getDate() + 30);
 
             const upcomingRenewals = activeSubscriptions.filter(sub => {
-                sub.renewalDate >= today && sub.renewalDate <= next30Days;
+                if (!sub.renewalDate) return false;
+                return sub.renewalDate >= today && sub.renewalDate <= next30Days;
             }).sort((a, b) => new Date(a.renewalDate) - new Date(b.renewalDate)).slice(0, 5);
 
             return res.render('index.ejs', {

@@ -9,6 +9,42 @@
     <%- include('partials/_navbar.ejs') %>
     <% if (user) { %>
     <h1>Welcome to the KEEPR, <%= user.username %>!</h1>
+
+    <h2>Summary</h2>
+    <p>Active subscriptions: <%= subscriptions.active.length %></p>
+    <p>Paused subscriptions: <%= subscriptions.paused.length %></p>
+    <p>Cancelled subscriptions: <%= subscriptions.cancelled.length %></p>
+    <p>
+      Estimated monthly cost:
+      <strong><%= totalMonthlyCost.toFixed(2) %></strong>
+    </p>
+
+    <h2>Upcoming Renewals</h2>
+
+    <% if (upcomingRenewals.length > 0) { %>
+      <ul>
+        <% upcomingRenewals.forEach(sub => { %>
+          <li>
+            <a href="/subscriptions/<%= sub._id %>">
+              <%= sub.serviceName %>
+            </a>
+            <br>
+            Renewal date:
+            <%= sub.renewalDate
+              ? new Date(sub.renewalDate).toDateString()
+              : 'N/A' %>
+            <br>
+            Price:
+            <%= sub.currency %> <%= Number(sub.price).toFixed(2) %>
+            (<%= sub.subType %>)
+          </li>
+          <br>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No upcoming renewals in the next 30 days.</p>
+    <% } %>
+
     <p>
       <a href="/auth/sign-out">Sign out</a>
     </p>

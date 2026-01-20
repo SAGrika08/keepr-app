@@ -17,6 +17,7 @@
         <input type="number" name="price" id="price" min="0" value="<%= subscription.price %>" required />
         <label for="currency">Currency:</label>
         <select name="currency" id="currency" required value ="<%= subscription.currency %>">
+            <option value="" disabled>Select Currency</option>
             <option value="USD" <%= subscription.currency === 'USD' ? 'selected' : '' %>>USD ($)</option>
             <option value="EUR" <%= subscription.currency === 'EUR' ? 'selected' : '' %>>EUR (€)</option>
             <option value="GBP" <%= subscription.currency === 'GBP' ? 'selected' : '' %>>GBP (£)</option>
