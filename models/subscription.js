@@ -23,7 +23,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     subType: {
         type: String,
-        enum: ['Trail', 'Weekly', 'Monthly', 'Yearly'],
+        enum: ['Trial', 'Weekly', 'Monthly', 'Yearly'],
         required: true
     },
     status: {

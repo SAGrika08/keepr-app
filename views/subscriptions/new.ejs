@@ -7,15 +7,27 @@
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Add a New Subscription</h1>
-    <form action="/subscriptions" method="POST">
-        <label for="service-name">Service Name:</label>
+    <main class="form-page">
+    <h1>Add a Subscription</h1>
+    <form class="form"action="/subscriptions" method="POST">
+
+        <div class="form-row">
+        <label for="service-name">Service Name</label>
         <input type="text" name="serviceName" id="service-name" placeholder="Netflix, Spotify, Notion..." required/>
-        <label for="plan-name">Plan Name:</label>
-        <input type="text" name="planName" id="plan-name" placeholder="Basic, Premium..." />
-        <label for="price">Price:</label>
+        </div>
+
+        <div class="form-row">
+        <label for="plan-name">Plan Name</label>
+        <input type="text" name="planName" id="plan-name" placeholder="Basic, Premium..." required/>
+        </div>
+
+        <div class="form-row">
+        <label for="price">Price</label>
         <input type="number" name="price" id="price" min="0" required />
-        <label for="currency">Currency:</label>
+        </div>
+
+        <div class="form-row">      
+        <label for="currency">Currency</label>
         <select name="currency" id="currency" required>
             <option value="" disabled selected>Select currency</option>
             <option value="USD">USD ($)</option>
@@ -23,9 +35,16 @@
             <option value="GBP">GBP (£)</option>
             <option value="INR">INR (₹)</option>
         </select>
-        <label for="renewal-date">Renewal Date:</label>
-        <input type="date" name="renewalDate" id="renewal-date" />
-        <label for="sub-type">Subscription Type:</label>
+        </div>
+
+        <div class="form-row">
+        <label for="renewal-date">Next Renewal Date</label>
+        <input type="date" name="renewalDate" id="renewal-date" required/>
+        </div>
+
+        <div class="form-row">
+        <label for="sub-type">Billing Type</label>
+        <div class="radio-group">
         <input type="radio" name="subType" id="trial" value="Trial" checked />
         <label for="trial">Trial</label>
         <input type="radio" name="subType" id="weekly" value="Weekly" />
@@ -34,17 +53,30 @@
         <label for="monthly">Monthly</label>
         <input type="radio" name="subType" id="yearly" value="Yearly" />
         <label for="yearly">Yearly</label>
-        <label for="status">Status:</label>
+            </div>
+        </div>
+
+         <div class="form-row">
+        <label for="status">Status</label>
         <select name="status" id="status" required>
+            <option value="" disabled selected>Select status</option>
             <option value="Active">Active</option>
             <option value="Paused">Paused</option>
             <option value="Cancelled">Cancelled</option>
         </select>
-        <label for="notes">Notes:</label>
+        </div>
+
+        <div class="form-row">
+        <label for="notes">Notes (optional)</label>
         <textarea name="notes" id="notes" rows="4" cols="50"  placeholder="Any extra details (account email, reminders, cancellation info...)"></textarea>
+        </div>
+
+        <div class="form-actions">
         <button type="reset">Clear</button>
-        <button type="submit" onclick="window.location.href='/subscriptions'">Back</button>
+        <button type="button" onclick="window.location.href='/subscriptions'">Back</button>
         <button type="submit">Create Subscription</button>
+        </div>
         </form>
+    </main>
     </body>
 </html>
