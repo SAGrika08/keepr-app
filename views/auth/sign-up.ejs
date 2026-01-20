@@ -6,20 +6,38 @@
   <title>Sign Up</title>
 </head>
 <body>
-  <h1>Create a new account</h1>
-  <form action="/auth/sign-up" method="POST">
-    <label for="username">Username:</label>
+    <main class="auth-page">
+  <h1>Sign up</h1>
+  <p class="subtitle">
+      Create an account to start tracking your subscriptions.
+    </p>
+
+  <form class="auth-form" action="/auth/sign-up" method="POST">
+    <div class="form-row">
+    <label for="username">Username</label>
     <input type="text" name="username" id="username" required />
-    <label for="password">Password:</label>
+    </div>
+
+    <div class="form-row">
+    <label for="password">Password</label>
     <input type="password" name="password" id="password" required />
-    <label for="confirmPassword">Confirm Password:</label>
-    <input 
-      type="password"
-      name="confirmPassword"
-      id="confirmPassword"
-      required 
-    />
+    </div>
+
+    <div class="form-row">
+    <label for="confirmPassword">Confirm Password</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" required />
+    </div>
+
+     <div class="form-actions">
     <button type="submit">Create Account</button>
+    </div>
   </form>
+
+
+    <p class="auth-footer">
+      Already have an account?
+      <a href="/auth/sign-in">Sign in</a>
+    </p>
+  </main>
 </body>
 </html>

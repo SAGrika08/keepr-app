@@ -70,7 +70,19 @@
 
   <% } else { %>
     <h1>Welcome to KEEPR</h1>
-    <p class="subtitle"> Sign in to start tracking your subscriptions today!</p>
+    <p class="subtitle"> Track your subscriptions, avoid surprise charges, and stay in control.</p>
+
+    <div class="landing-actions">
+      <form action="/auth/sign-up" method="GET">
+    <button type="submit">Get started</button>
+  </form>
+
+
+      <p>
+        Already have an account?
+        <a href="/auth/sign-in">Sign in</a>
+      </p>
+    </div>
     <% } %>
 
 </body>

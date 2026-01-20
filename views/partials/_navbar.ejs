@@ -1,12 +1,11 @@
-
-
-<nav>
-  <% if (user) { %>
- <a href="/">Home</a>
-  <a href="/subscriptions">All Subscriptions</a>
-  <a href="/auth/sign-out">Sign Out</a>
-  <% } else { %>
-  <a href="/auth/sign-up">Sign Up</a>
-  <a href="/auth/sign-in">Sign In</a>
-  <% } %>
-</nav>
+<% if (user) { %>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="/" class="nav-link">KEEPR</a>
+    </div>
+    <div class="nav-right">
+      <a href="/subscriptions" class="nav-link">Subscriptions</a>
+      <a href="/auth/sign-out" class="nav-link">Sign out</a>
+    </div>
+  </nav>
+<% } %>
