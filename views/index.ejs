@@ -8,14 +8,25 @@
 <body>
     <%- include('partials/_navbar.ejs') %>
     <% if (user) { %>
-    <h1>Welcome to the KEEPR, <%= user.username %>!</h1>
+    <main class="dashboard">
+    <h1>Welcome back, <%= user.username %></h1>
+    <p class="subtitle">
+    Here's a quick overview of your subscriptions and upcoming renewals
+    </p>
 
-    <h3>Summary</h3>
+    <section class="dashboard-section">
+    <h2>Your Overview</h2>
     <p>Active subscriptions: <%= subscriptions.active.length %></p>
     <p>Paused subscriptions: <%= subscriptions.paused.length %></p>
     <p>Cancelled subscriptions: <%= subscriptions.cancelled.length %></p>
+    </section>
     
-    <h3>Estimated monthly cost by currency</h3>
+    <section class="dashboard-section">
+    <h2>Estimated Monthly Spend</h2>
+
+    <% if (Object.keys(totalMonthlyCostByCurrency).length === 0) { %>
+  <p>No active subscriptions to calculate yet.</p>
+<% } else { %>
 <ul>
   <% Object.keys(totalMonthlyCostByCurrency).forEach(currency => { %>
     <li>
@@ -23,8 +34,11 @@
     </li>
   <% }) %>
 </ul>
+<% } %>
+    </section>
 
-    <h3>Upcoming Renewals</h3>
+    <section class="dashboard-section">
+    <h2>Upcoming Renewals</h2>
 
     <% if (upcomingRenewals.length > 0) { %>
       <ul>
@@ -34,24 +48,30 @@
               <%= sub.serviceName %>
             </a>
             <br>
-            Renewal date:
+            <small>
+            Renews on:
+            <br>
             <%= sub.renewalDate
               ? new Date(sub.renewalDate).toDateString()
-              : 'N/A' %>
-            <br>
-            Price:
-            <%= sub.currency %> <%= Number(sub.price).toFixed(2) %>
+              : 'N/A' %> 
+              <br>
+            <%= sub.currency %> <%= Number(sub.price).toFixed(2) %> -
             (<%= sub.subType %>)
+            </small>
           </li>
           <br>
         <% }) %>
       </ul>
     <% } else { %>
-      <p>No upcoming renewals in the next 30 days.</p>
+      <p>No upcoming renewals in the next 30 days</p>
     <% } %>
+    </section>
+    </main>
 
   <% } else { %>
-    <h1>Welcome to the KEEPR, guest!</h1>
-  <% } %>
+    <h1>Welcome to KEEPR</h1>
+    <p class="subtitle"> Sign in to start tracking your subscriptions today!</p>
+    <% } %>
+
 </body>
 </html>
