@@ -16,22 +16,22 @@
     </p>
 
     <section class="dashboard-section">
-    <h2>Your Overview</h2>
-    <p>Active subscriptions: <%= subscriptions.active.length %></p>
-    <p>Paused subscriptions: <%= subscriptions.paused.length %></p>
-    <p>Cancelled subscriptions: <%= subscriptions.cancelled.length %></p>
+    <h2><img src="/stylesheets/assets/overview.png" class="section-icon" alt="">Your Overview</h2>
+    <p class="stat-line"><span><span class="dot dot-active"></span>Active subscriptions:</span> <strong><%= subscriptions.active.length %></strong></p>
+    <p class="stat-line"><span><span class="dot dot-paused"></span>Paused subscriptions: </span><strong><%= subscriptions.paused.length %></strong></p>
+    <p class="stat-line"><span><span class="dot dot-cancelled"></span>Cancelled subscriptions:</span><strong> <%= subscriptions.cancelled.length %></strong></p>
     </section>
     
     <section class="dashboard-section">
-    <h2>Estimated Monthly Spend</h2>
+    <h2><img src="/stylesheets/assets/spend.png" class="section-icon" alt="">Estimated Monthly Spend</h2>
 
     <% if (Object.keys(totalMonthlyCostByCurrency).length === 0) { %>
   <p>No active subscriptions to calculate yet.</p>
 <% } else { %>
-<ul>
+<ul class="currency-list">
   <% Object.keys(totalMonthlyCostByCurrency).forEach(currency => { %>
     <li>
-      <%= currency %>: <%= totalMonthlyCostByCurrency[currency].toFixed(2) %>
+     <span> <%= currency %>:</span><span> <%= totalMonthlyCostByCurrency[currency].toFixed(2) %> </span>
     </li>
   <% }) %>
 </ul>
@@ -39,28 +39,29 @@
     </section>
 
     <section class="dashboard-section">
-    <h2>Upcoming Renewals</h2>
+    <h2><img src="/stylesheets/assets/upcoming.png" class="section-icon" alt="">Upcoming Renewals</h2>
 
     <% if (upcomingRenewals.length > 0) { %>
       <ul>
         <% upcomingRenewals.forEach(sub => { %>
-          <li>
+          <li class="renewal-item">
             <a href="/subscriptions/<%= sub._id %>">
               <%= sub.serviceName %>
             </a>
-            <br>
-            <small>
+            <div class="renewal-meta">
+             <span>
             Renews on:
-            <br>
             <%= sub.renewalDate
               ? new Date(sub.renewalDate).toDateString()
               : 'N/A' %> 
-              <br>
+             </span>
+
+              <span class="renewal-price">
             <%= sub.currency %> <%= Number(sub.price).toFixed(2) %> -
             (<%= sub.subType %>)
-            </small>
+              </span>
+              </div>
           </li>
-          <br>
         <% }) %>
       </ul>
     <% } else { %>
@@ -70,7 +71,16 @@
     </main>
 
   <% } else { %>
-    <h1>Welcome to KEEPR</h1>
+    <main class="landing">
+        <div class="auth-brand">
+      <img
+        src="/stylesheets/assets/KEEPR.svg"
+        alt="KEEPR logo"
+        class="auth-logo"
+      />
+      <span class="auth-name">KEEPR</span>
+    </div>
+    <!-- <h1>Welcome to KEEPR</h1> -->
     <p class="subtitle"> Track your subscriptions, avoid surprise charges, and stay in control.</p>
 
     <div class="landing-actions">
@@ -84,6 +94,7 @@
         <a href="/auth/sign-in">Sign in</a>
       </p>
     </div>
+    </main>
     <% } %>
 
 </body>

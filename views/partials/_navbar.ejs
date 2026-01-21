@@ -1,11 +1,14 @@
 <% if (user) { %>
   <nav class="navbar">
+     <div class="nav-inner">
     <div class="nav-left">
-      <a href="/" class="nav-link">KEEPR</a>
+      <a href="/" class="nav-link brand">
+        <img src="/stylesheets/assets/KEEPR.svg" class="logo"> <span>KEEPR</span></a>
     </div>
     <div class="nav-right">
       <a href="/subscriptions" class="nav-link">Subscriptions</a>
       <a href="/auth/sign-out" class="nav-link">Sign out</a>
+    </div>
     </div>
   </nav>
 <% } %>

@@ -39,11 +39,15 @@
 
   <div class="filter-row">
     <span>Order</span>
+    <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus : '' %>"
+   class="<%= currentSort === 'None' ? 'active' : '' %>">
+  Default
+</a>
 
-    <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sort=renewal"
-       class="<%= currentSort === 'renewal' ? 'active' : '' %>">
-      Renewing soon
-    </a>
+    <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sortBy=renewalDate"
+   class="<%= currentSort === 'renewalDate' ? 'active' : '' %>">
+  Renewing soon
+</a>
   </div>
 
     <% if (subscriptions.length > 0) { %> 
@@ -53,6 +57,10 @@
       <a href="/subscriptions/<%= subscription._id %>">
         <%= subscription.serviceName %>
       </a>
+      <br>
+  <small>
+    Renews: <%= subscription.renewalDate ? new Date(subscription.renewalDate).toDateString() : 'N/A' %>
+  </small>
     </li>
     <% }) %>
     </ul>

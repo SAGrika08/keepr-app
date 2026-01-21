@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
         res.locals.subscriptions = userSubscriptions;
         res.render('subscriptions/index.ejs', { 
             user: req.session.user,
+            subscriptions: userSubscriptions,
             currentStatus: status || 'All',
             currentSort: sortBy || 'None'    
         });

@@ -13,18 +13,38 @@
     <p class="subtitle">Manage and review your service subscription details</p>
 
     <section class="details">
-    <p class="details-row"><strong>Service Name</strong> <%= subscription.serviceName %></p>
-    <p class="details-row"><strong>Plan Name</strong> <%= subscription.planName %></p>
-    <p class="details-row"><strong>Price</strong>
+    <p class="details-row"><strong>
+         <img src="/stylesheets/assets/menu.png" class="detail-icon" alt="">
+         Service Name</strong> <%= subscription.serviceName %></p>
+    <p class="details-row"><strong>
+         <img src="/stylesheets/assets/plan.png" class="detail-icon" alt="">
+         Plan Name</strong> <%= subscription.planName %></p>
+    <p class="details-row"><strong>
+         <img src="/stylesheets/assets/price-tag.png" class="detail-icon" alt="">
+         Price</strong>
         <%= subscription.currency %> <%= subscription.price.toFixed(2) %>
     </p>
-    <p class="details-row"><strong>Next Renewal</strong>  <%= subscription.renewalDate ? new Date(subscription.renewalDate).toDateString() : 'N/A' %></p>
-        <% if (subscription.renewalDate) { %>
-        <small>This subscription will renew automatically.</small>
-        <% } %>
-    <p class="details-row"><strong>Billing Type</strong> <%= subscription.subType %></p>
-    <p class="details-row"><strong>Status</strong> <%= subscription.status %></p>
-    <p class="details-row"><strong>Notes</strong> <%= subscription.notes || 'No notes added' %></p>
+    <p class="details-row">
+  <strong>
+     <img src="/stylesheets/assets/date.png" class="detail-icon" alt="">
+     Next Renewal</strong>
+  <span class="details-value">
+    <%= subscription.renewalDate ? new Date(subscription.renewalDate).toDateString() : 'N/A' %>
+
+    <% if (subscription.renewalDate) { %>
+      <small class="renewal-note">*This subscription will renew automatically.</small>
+    <% } %>
+  </span>
+</p>
+    <p class="details-row"><strong> 
+        <img src="/stylesheets/assets/cycle.png" class="detail-icon" alt="">
+        Billing Type</strong> <%= subscription.subType %></p>
+    <p class="details-row"><strong>
+         <img src="/stylesheets/assets/status.png" class="detail-icon" alt="">
+         Status</strong> <%= subscription.status %></p>
+    <p class="details-row"><strong>
+         <img src="/stylesheets/assets/notes.png" class="detail-icon" alt="">
+         Notes</strong> <%= subscription.notes || 'No notes added' %></p>
     </section>
 
     <div class="actions">
