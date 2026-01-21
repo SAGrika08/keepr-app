@@ -7,6 +7,7 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
+const path = require('path');
 
 const subscription = require('./models/subscription.js');
 const user = require('./models/user.js');
@@ -37,6 +38,7 @@ app.use(
         }),
     })
 );
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passUserToView);
 
