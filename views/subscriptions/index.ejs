@@ -9,11 +9,21 @@
   <body>
     <%- include('../partials/_navbar.ejs') %>
     <main class="subscriptions">
+<div class="page-head">
+  <div class="page-title">
     <h1>Subscriptions</h1>
     <p class="subtitle">
-    Here is a list of all the subscriptions you have added.
-    You can filter them by status and sort them by renewal date.
+      Here is a list of all the subscriptions you have added.
+      You can filter them by status and sort them by renewal date.
     </p>
+  </div>
+
+  <div class="action">
+    <form action="/subscriptions/new" method="GET">
+      <button type="submit">+ Add New Subscription</button>
+    </form>
+  </div>
+</div>
     <div class="filter-row">
     <span>Status</span>
 
@@ -78,11 +88,6 @@
         <p class="empty-state">You have not logged any services yet.</p>
     <% } %>
 </div>
-    <div class="action">
-    <form action="/subscriptions/new" method="GET">
-    <button type="submit">+ Add New Subscription</button>
-    </form>
-    </div>
     </main>
     </body>
 </html>
