@@ -43,57 +43,69 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(passUserToView);
 
 //routes
-app.get('/', async(req, res) => {
-    const user = req.session.user;
-        if (!user) {
-            return res.render('index.ejs', { user: null });
+app.get('/', async (req, res) => {
+  const user = req.session.user;
+  if (!user) return res.render('index.ejs', { user: null });
+
+  try {
+    const subscriptions = await subscription.find({ owner: user._id });
+
+    const active = subscriptions.filter(s => s.status === 'Active');
+    const cancelled = subscriptions.filter(s => s.status === 'Cancelled');
+    const paused = subscriptions.filter(s => s.status === 'Paused');
+
+    const totalMonthlyCostByCurrency = active.reduce((totals, sub) => {
+      let monthly = 0;
+      if (sub.subType === 'Weekly') monthly = sub.price * 4;
+      else if (sub.subType === 'Monthly') monthly = sub.price;
+      else if (sub.subType === 'Yearly') monthly = sub.price / 12;
+
+      totals[sub.currency] = (totals[sub.currency] || 0) + monthly;
+      return totals;
+    }, {});
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const limit = new Date(today);
+    limit.setDate(limit.getDate() + 30);
+
+    const upcomingRenewals = active
+      .map(sub => {
+        const obj = sub.toObject();
+        let date = obj.renewalDate ? new Date(obj.renewalDate) : null;
+
+        if (date && obj.subType !== 'Trial') {
+          date.setHours(0, 0, 0, 0);
+          while (date < today) {
+            if (obj.subType === 'Weekly') date.setDate(date.getDate() + 7);
+            else if (obj.subType === 'Monthly') date.setMonth(date.getMonth() + 1);
+            else if (obj.subType === 'Yearly') date.setFullYear(date.getFullYear() + 1);
+            else break;
+            date.setHours(0, 0, 0, 0);
+          }
+        } else {
+          date = null;
         }
-        try {
-            const subscriptions = await subscription.find({ owner: user._id });
-            const activeSubscriptions = subscriptions.filter(sub => sub.status === 'Active');
-            const cancelledSubscriptions = subscriptions.filter(sub => sub.status === 'Cancelled');
-            const pausedSubscriptions = subscriptions.filter(sub => sub.status === 'Paused');
 
-            const totalMonthlyCostByCurrency = activeSubscriptions.reduce((totals, sub) => {
-                const currency = sub.currency;
-                const price = Number(sub.price) || 0;
-                let monthlyPrice = 0;
-            
-                if (sub.subType === 'Weekly') monthlyPrice = price * 4;
-                else if (sub.subType === 'Monthly') monthlyPrice = price;
-                else if (sub.subType === 'Yearly') monthlyPrice = price / 12;
-                else monthlyPrice = 0;
+        obj.nextRenewalDate = date;
+        return obj;
+      })
+      .filter(sub => sub.nextRenewalDate && sub.nextRenewalDate >= today && sub.nextRenewalDate <= limit)
+      .sort((a, b) => a.nextRenewalDate - b.nextRenewalDate)
+      .slice(0, 5);
 
-                totals[currency] = (totals[currency] || 0) + monthlyPrice;
-                return totals;
-            }, {});
+    res.render('index.ejs', {
+      user,
+      subscriptions: { active, cancelled, paused },
+      totalMonthlyCostByCurrency,
+      upcomingRenewals
+    });
 
-            const today = new Date();
-            const next30Days = new Date();
-            next30Days.setDate(today.getDate() + 30);
-
-            const upcomingRenewals = activeSubscriptions.filter(sub => {
-                if (!sub.renewalDate) return false;
-                return sub.renewalDate >= today && sub.renewalDate <= next30Days;
-            }).sort((a, b) => new Date(a.renewalDate) - new Date(b.renewalDate)).slice(0, 5);
-
-            
-
-            return res.render('index.ejs', {
-                user: req.session.user,
-                subscriptions: {
-                    active: activeSubscriptions,
-                    cancelled: cancelledSubscriptions,
-                    paused: pausedSubscriptions,
-                },
-                totalMonthlyCostByCurrency,
-                upcomingRenewals
-            });
-
-    } catch (error) {
-        console.log(error);
-        return res.render('index.ejs', { user: req.session.user });
-    }
+  } catch (err) {
+    console.log(err);
+    res.render('index.ejs', { user });
+  }
 });
 
 app.use('/auth', authController);

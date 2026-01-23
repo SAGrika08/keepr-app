@@ -29,9 +29,10 @@
      <img src="/stylesheets/assets/date.png" class="detail-icon" alt="">
      Next Renewal</strong>
   <span class="details-value">
-    <%= subscription.renewalDate ? new Date(subscription.renewalDate).toDateString() : 'N/A' %>
-
-    <% if (subscription.renewalDate) { %>
+  <%= subscription.nextRenewalDate
+    ? new Date(subscription.nextRenewalDate).toDateString()
+    : `This subscription is ${subscription.status}` %>
+    <% if (subscription.renewalDate && subscription.status === 'Active') { %>
       <small class="renewal-note">*This subscription will renew automatically.</small>
     <% } %>
   </span>

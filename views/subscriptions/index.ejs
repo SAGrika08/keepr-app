@@ -44,12 +44,12 @@
   Default
 </a>
 
-    <a href="/subscriptions?<%= currentStatus !== 'All' ? 'status=' + currentStatus + '&' : '' %>sortBy=renewalDate"
+   <a href="/subscriptions?sortBy=renewalDate"
    class="<%= currentSort === 'renewalDate' ? 'active' : '' %>">
   Renewing soon
 </a>
   </div>
-
+<div class="subscription-content">
     <% if (subscriptions.length > 0) { %> 
     <ul class="subscription-list">
     <% subscriptions.forEach((subscription) => { %>
@@ -58,15 +58,26 @@
         <%= subscription.serviceName %>
       </a>
       <br>
-  <small>
-    Renews: <%= subscription.renewalDate ? new Date(subscription.renewalDate).toDateString() : 'N/A' %>
-  </small>
+ <small>
+  <% if (subscription.status === 'Cancelled') { %>
+    Cancelled
+  <% } else if (subscription.status === 'Paused') { %>
+    Paused
+  <% } else if (subscription.subType === 'Trial') { %>
+    Trial period
+  <% } else { %>
+    Renews: <%= subscription.nextRenewalDate
+      ? new Date(subscription.nextRenewalDate).toDateString()
+      : 'N/A' %>
+  <% } %>
+</small>
     </li>
     <% }) %>
     </ul>
     <% } else { %>
-    <p>You have not logged any services yet.</p>
+        <p class="empty-state">You have not logged any services yet.</p>
     <% } %>
+</div>
     <div class="action">
     <form action="/subscriptions/new" method="GET">
     <button type="submit">+ Add New Subscription</button>

@@ -16,7 +16,12 @@
     </p>
 
     <section class="dashboard-section">
+    <div class="card-head">
     <h2><img src="/stylesheets/assets/overview.png" class="section-icon" alt="">Your Overview</h2>
+    <form action="/subscriptions/new" method="GET">
+    <button type="submit">+ Add New</button>
+    </form>
+    </div>
     <p class="stat-line"><span><span class="dot dot-active"></span>Active subscriptions:</span> <strong><%= subscriptions.active.length %></strong></p>
     <p class="stat-line"><span><span class="dot dot-paused"></span>Paused subscriptions: </span><strong><%= subscriptions.paused.length %></strong></p>
     <p class="stat-line"><span><span class="dot dot-cancelled"></span>Cancelled subscriptions:</span><strong> <%= subscriptions.cancelled.length %></strong></p>
@@ -26,7 +31,7 @@
     <h2><img src="/stylesheets/assets/spend.png" class="section-icon" alt="">Estimated Monthly Spend</h2>
 
     <% if (Object.keys(totalMonthlyCostByCurrency).length === 0) { %>
-  <p>No active subscriptions to calculate yet.</p>
+  <p>No active subscriptions to calculate yet</p>
 <% } else { %>
 <ul class="currency-list">
   <% Object.keys(totalMonthlyCostByCurrency).forEach(currency => { %>
@@ -51,9 +56,9 @@
             <div class="renewal-meta">
              <span>
             Renews on:
-            <%= sub.renewalDate
-              ? new Date(sub.renewalDate).toDateString()
-              : 'N/A' %> 
+            <%= sub.nextRenewalDate
+            ? new Date(sub.nextRenewalDate).toDateString()
+            : 'N/A' %>
              </span>
 
               <span class="renewal-price">

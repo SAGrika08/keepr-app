@@ -60,7 +60,10 @@ h1 { font-size: var(--h1); font-weight: 700; }
 h2 { font-size: var(--h2); font-weight: 700; }
 h3 { font-size: var(--h3); font-weight: 600; }
 
-p, li { font-size: var(--text); }
+p, li { 
+    font-size: var(--text);
+color:var(--jungle);
+font-size:18px;}
 
 .subtitle {
   color: var(--jungle);
@@ -120,7 +123,7 @@ p, li { font-size: var(--text); }
 
 .dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
@@ -144,8 +147,9 @@ p, li { font-size: var(--text); }
   border: var(--border);
 }
 
-.dashboard-section:nth-of-type(3) {
-  grid-column: 1 / -1;
+.dashboard-section:hover {
+   border-color: rgba(5, 51, 51, 0.14);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 .dashboard-section h2 {
@@ -165,6 +169,28 @@ p, li { font-size: var(--text); }
   list-style: none;
   padding: 0;
   margin-top: 12px;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.card-head h2 {
+  margin-bottom: 0;
+}
+
+.card-cta {
+  margin: 0;
+}
+
+.card-cta button {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-weight: 700;
 }
 
 .stat-line {
@@ -255,7 +281,6 @@ display: grid;
     font-weight: 700;
     color: var(--forest);
 }
-
 .subscriptions {
   max-width: var(--container);
   margin: 0 auto;
@@ -288,8 +313,8 @@ display: grid;
   border: 1px solid rgba(5, 51, 51, 0.18);
   font-size: 14px;
   color: var(--sacramento);
-  transition: background-color var(--t), border-color var(--t);
   text-decoration: none;
+  transition: background-color var(--t), border-color var(--t);
 }
 
 .subscriptions .filter-row a:hover {
@@ -303,9 +328,13 @@ display: grid;
   border-color: rgba(5, 51, 51, 0.35);
 }
 
-.subscription-list {
+.subscription-content {
   clear: both;
   margin-top: 32px;
+  margin-bottom: 32px; 
+}
+
+.subscription-list {
   list-style: none;
   padding: 0;
 
@@ -332,17 +361,41 @@ display: grid;
   display: block;
   font-weight: 700;
   color: var(--sacramento);
+  text-decoration: none;
 }
 
-.subscription-item a:hover {
-text-decoration: none;
-  display: block;
-  font-weight: 700;
+.empty-state {
+  text-align: center;
+  color: var(--jungle);
+  font-size: 16px;
 }
 
-/* Action spacing */
-.action {
+.subscriptions .action {
   margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.subscriptions .action form {
+  margin: 0;
+}
+
+
+@media (max-width: 640px) {
+  .subscriptions .filter-row:first-of-type,
+  .subscriptions .filter-row:nth-of-type(2) {
+    float: none;
+    padding: 12px 0;
+  }
+
+  .subscriptions-cta {
+    justify-content: center;
+  }
+
+  .subscriptions-cta button {
+    width: 100%;
+    max-width: 320px;
+  }
 }
 
 button {
@@ -639,7 +692,7 @@ body > .auth-page {
   transition: background-color var(--t), border-color var(--t), transform var(--t);
 }
 
-/* Secondary buttons (match form secondary) */
+
 .subscription-details .actions button[type="button"],
 .subscription-details .actions button:not([type]) {
   background: var(--white);
@@ -651,7 +704,7 @@ body > .auth-page {
   background: #f2e8de;
 }
 
-/* Delete stays destructive */
+
 .subscription-details .actions form button[type="submit"] {
   color: var(--white);
   background-color: #e74c3c;
