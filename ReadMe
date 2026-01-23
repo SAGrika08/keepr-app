@@ -1,0 +1,130 @@
+# KEEPR
+Track your subscriptions, avoid surprise charges, and stay in control.
+
+# Description
+
+KEEPR is a subscription tracking web app built as a MEN stack CRUD project.
+The goal of the project was to design and build a full-stack application that allows users to log, manage, and review recurring subscriptions while maintaining a clean, user-friendly interface.
+
+I built KEEPR to solve a real problem I personally experience: forgetting about subscriptions until after I’m charged. The app focuses on clarity, visibility, and control showing users what’s active, what’s renewing soon, and how much they’re actually spending.
+
+# Deployment Link
+Live App: 
+
+# Demo Login (for reviewers):
+Username: sagri
+Password: 123
+
+
+# GitHub Repo
+Link: https://github.com/SAGrika08/keepr-app.git
+
+# Brief
+The brief for this project was to build a full CRUD web application using the MEN stack.
+The app needed to support user authentication, data ownership, and complete CRUD functionality while following RESTful routing conventions and demonstrating thoughtful UX decisions.
+
+
+# Planning
+I began the project by clearly defining the problem space and the core MVP features before writing any code.
+
+Planning steps included:
+* Writing user stories
+* Wireframing basic page layouts for:
+	Dashboard
+	Subscription list
+	Subscription detail view
+* Building ERD 
+	Defining the data model and relationships (User → Subscriptions)
+	Planning CRUD routes and user flows
+	Identifying the MVP scope and intentionally cutting “nice-to-have” features
+
+Because this was a solo project, I owned all planning, design, and development decisions.
+
+# Planning Materials
+Figma: https://www.figma.com/design/24fNUtARquyjqaGlAtG9AT/SE--PROJECTS?node-id=29-79&t=5UnNCoGwCu9oRKNC-1 
+
+
+# Timeframe & Working Team
+Timeframe: 1 week
+Team: Solo project
+
+* This project was designed, planned, and built independently.
+
+# Technologies Used
+Back End
+* Node.js
+* Express
+* MongoDB
+* Mongoose
+
+Front End
+* EJS (Embedded JavaScript Templates)
+* HTML
+* CSS 
+
+Other
+* JavaScript
+* RESTful routing
+* Session-based authentication
+* Git & GitHub
+
+
+# Build Process
+The project was built incrementally, starting with authentication and data models, followed by CRUD functionality and finally the dashboard logic.
+
+# Key highlights:
+Full CRUD Subscription Management
+    Users can:
+	    Create subscriptions
+	    View all subscriptions
+	    Edit subscription details
+	    Delete subscriptions
+
+Each subscription is owned by a user and protected via session-based authentication.
+
+Auto Renewal Date Logic
+    One feature I’m particularly proud of is the automatic next renewal calculation.
+    If a user enters a renewal date that has already passed, the app computes the next valid renewal date based on the subscription type (weekly, monthly, yearly).
+
+This logic is used consistently across:
+    Dashboard upcoming renewals
+	Subscription list sorting
+	Individual subscription detail pages
+
+Dashboard Insights
+    The dashboard aggregates meaningful information:
+	    Active, paused, and cancelled subscription counts
+	    Estimated monthly spend (normalized across weekly/monthly/yearly plans)
+	    Upcoming renewals within the next 30 days
+
+
+# Challenges
+* Renewal date logic:
+    Handling past dates, different billing cycles, and trial subscriptions required careful date manipulation and edge case handling.
+* Data consistency across views:
+    Ensuring the same renewal logic applied correctly on the dashboard, index page, and show page took iteration and refactoring.
+* Scope control:
+    It was tempting to add advanced features early, but staying focused on a solid MVP was the biggest challenge.
+
+# Wins
+* Successfully implemented a reliable auto-renewal date system
+* Clean separation between logic (routes) and presentation (EJS views)
+* Consistent UI and interaction patterns across the app
+* Completed a fully functional MEN stack app independently
+
+
+# Key Learnings / Takeaways
+* Gained strong confidence working with:
+* Express routing
+* MongoDB + Mongoose
+* Session-based authentication
+* Learned how small backend decisions directly affect UX
+* Developed a deeper appreciation for the complexity behind “simple” features
+
+
+# Future Improvements
+* Add categories or tags for subscriptions
+* Introduce renewal reminders or notifications
+* Provide deeper insights into spending habits
+* Improve accessibility and keyboard navigation
+* Add support for multiple currencies with conversion
