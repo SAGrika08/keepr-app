@@ -9,7 +9,7 @@ The goal of the project was to design and build a full-stack application that al
 I built KEEPR to solve a real problem I personally experience: forgetting about subscriptions until after I’m charged. The app focuses on clarity, visibility, and control showing users what’s active, what’s renewing soon, and how much they’re actually spending.
 
 # Deployment Link
-Live App: 
+Live App: https://keepr-app-4350431e7ace.herokuapp.com/
 
 # Demo Login (for reviewers):
 Username: sagri
